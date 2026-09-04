@@ -1,0 +1,10 @@
+Django==6.0.6
+Pillow>=11.0
+python-dotenv>=1.1
+certifi>=2024.2.2
+gunicorn>=23.0
+whitenoise>=6.7
+dj-database-url>=2.3
+psycopg2-binary>=2.9
+django-storages>=1.14
+boto3>=1.34

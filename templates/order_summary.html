@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Your Cart | Hamro Sports{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-heading"><span class="eyebrow dark">YOUR BAG</span><h1>Ready when you are.</h1><p>Review your gear before checkout.</p></div>
+  {% if object and object.items.all %}
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card-clean">
+        {% for order_item in object.items.all %}
+        <div class="cart-row">
+          <div class="cart-thumb">{% if order_item.item.image %}<img src="{{ order_item.item.image.url }}" alt="{{ order_item.item.title }}">{% endif %}</div>
+          <div class="flex-grow-1">
+            <div class="small text-muted">{{ order_item.item.brand }} · {{ order_item.item.get_category_display }}</div>
+            <h5 class="mb-1">{{ order_item.item.title }}</h5>
+            <div class="text-muted small">NPR {{ order_item.get_final_price }} total</div>
+          </div>
+          <div class="qty-control">
+            <a href="{% url 'core:remove-from-cart' order_item.item.slug %}">−</a><span>{{ order_item.quantity }}</span>
+            {% if order_item.quantity < order_item.item.stock %}<a href="{% url 'core:add-to-cart' order_item.item.slug %}">+</a>{% else %}<span class="disabled">+</span>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="summary-card">
+        <h5>Order summary</h5>
+        <div class="summary-line"><span>Subtotal</span><strong>NPR {{ object.get_subtotal }}</strong></div>
+        {% if object.coupon %}<div class="summary-line text-success"><span>Coupon</span><strong>− NPR {{ object.coupon.amount }}</strong></div>{% endif %}
+        <hr>
+        <div class="summary-line total"><span>Total</span><strong>NPR {{ object.get_total }}</strong></div>
+        <a href="{% url 'core:checkout' %}" class="btn btn-dark w-100 rounded-pill py-3 mt-3">Continue to checkout <i class="bi bi-arrow-right ms-1"></i></a>
+        <form method="post" action="{% url 'core:add-coupon' %}" class="mt-3">{% csrf_token %}
+          <div class="input-group"><input name="code" class="form-control" placeholder="Coupon code"><button class="btn btn-outline-dark">Apply</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="empty-state text-center py-5"><i class="bi bi-bag-x display-4 d-block mb-3"></i><h3>Your cart is empty.</h3><p>Find something for your next training session.</p><a href="{% url 'core:home' %}#products" class="btn btn-dark rounded-pill px-4">Start shopping</a></div>
+  {% endif %}
+</div>
+{% endblock %}

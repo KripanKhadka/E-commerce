@@ -1,0 +1,75 @@
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('productSearch');
+        const categoryButtons = document.querySelectorAll('.category-filter');
+        const productCards = document.querySelectorAll('#products .col[data-search]');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const quickViewModal = document.getElementById('quickViewModal');
+        const modal = quickViewModal ? new bootstrap.Modal(quickViewModal) : null;
+
+        function formatText(text) {
+            return text.trim().toLowerCase();
+        }
+
+        function updateFilters() {
+            const query = searchInput ? formatText(searchInput.value) : '';
+            const activeCategory = document.querySelector('.category-filter.active')?.dataset.category || 'all';
+            let visibleCount = 0;
+
+            productCards.forEach(card => {
+                const searchText = formatText(card.dataset.search || '');
+                const category = card.dataset.category || 'all';
+                const matchesQuery = !query || searchText.includes(query);
+                const matchesCategory = activeCategory === 'all' || category === activeCategory;
+                const shouldShow = matchesQuery && matchesCategory;
+
+                card.style.display = shouldShow ? '' : 'none';
+                if (shouldShow) visibleCount += 1;
+            });
+
+            if (noResultsMessage) {
+                noResultsMessage.classList.toggle('d-none', visibleCount > 0);
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', updateFilters);
+        }
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                updateFilters();
+            });
+        });
+
+        document.querySelectorAll('.quick-view-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const card = this.closest('.col');
+                if (!card || !modal) return;
+
+                const title = card.querySelector('.card-title')?.innerText || '';
+                const category = card.querySelector('.badge')?.innerText || '';
+                const brand = card.querySelector('.text-muted.fw-bold')?.innerText || '';
+                const description = card.querySelector('.card-text')?.innerText || '';
+                const imageSrc = card.querySelector('img')?.src || '';
+                const priceText = card.querySelector('.fs-5')?.innerText || '';
+                const addUrl = this.dataset.addUrl || '#';
+
+                document.getElementById('quickViewTitle').innerText = title;
+                document.getElementById('quickViewCategory').innerText = category;
+                document.getElementById('quickViewBrand').innerText = brand ? `Brand: ${brand}` : '';
+                document.getElementById('quickViewDescription').innerText = description;
+                document.getElementById('quickViewImage').src = imageSrc;
+                document.getElementById('quickViewPrice').innerText = priceText;
+                document.getElementById('modalAddToCart').href = addUrl;
+                modal.show();
+            });
+        });
+
+        updateFilters();
+    });
+</script>

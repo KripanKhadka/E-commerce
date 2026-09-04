@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Payment | Hamro Sports{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-heading"><span class="eyebrow dark">SECURE CHECKOUT</span><h1>Choose how to pay.</h1><p>Your order is not confirmed until the payment provider verifies the transaction.</p></div>
+  <div class="row g-4 justify-content-center">
+    <div class="col-lg-5">
+      <div class="summary-card h-100">
+        <h5>Your total</h5>
+        <div class="display-6 fw-bold mb-4">NPR {{ order.get_total }}</div>
+        <div class="payment-choice">
+          <div class="payment-logo esewa">eS</div><div><strong>eSewa</strong><span>Pay securely through ePay</span></div>
+        </div>
+        <form method="post" class="mt-3">{% csrf_token %}<input type="hidden" name="gateway" value="esewa"><button class="btn btn-success w-100 rounded-pill py-3">Continue with eSewa</button></form>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      {% include "order_snippet.html" %}
+      <div class="small text-muted mt-3"><i class="bi bi-shield-lock me-1"></i> Payment credentials are handled by the payment gateway. This site only stores transaction references and verification responses.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

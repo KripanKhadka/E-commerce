@@ -1,0 +1,7 @@
+<div class="summary-card">
+  <h5>Order summary</h5>
+  {% for item in order.items.all %}
+  <div class="d-flex justify-content-between gap-3 py-2 small"><span>{{ item.item.title }} × {{ item.quantity }}</span><strong>NPR {{ item.get_final_price }}</strong></div>
+  {% endfor %}
+  <hr><div class="summary-line total"><span>Total</span><strong>NPR {{ order.get_total }}</strong></div>
+</div>

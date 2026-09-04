@@ -1,0 +1,25 @@
+<footer class="footer mt-5">
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="brand-mark"><i class="bi bi-lightning-charge-fill"></i></span>
+          <h5 class="mb-0 fw-bold">Hamro Sports</h5>
+        </div>
+        <p class="text-white-50 mb-0">Practical sports gear for training, competition and weekend adventures.</p>
+      </div>
+      <div class="col-md-3">
+        <h6 class="fw-bold">Store</h6>
+        <a href="{% url 'core:home' %}#products">Products</a>
+        <a href="{% url 'core:home' %}#categories">Categories</a>
+        <a href="{% url 'core:order-summary' %}">Cart</a>
+      </div>
+      <div class="col-md-4">
+        <h6 class="fw-bold">Payments</h6>
+        <p class="text-white-50 small mb-0">Secure checkout with eSewa when merchant credentials are configured.</p>
+      </div>
+    </div>
+    <hr class="border-secondary my-4">
+    <div class="small text-white-50">© {% now "Y" %} Hamro Sports. All rights reserved.</div>
+  </div>
+</footer>

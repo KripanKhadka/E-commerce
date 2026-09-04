@@ -1,0 +1,27 @@
+<div class="col-sm-6 col-lg-4 product-card-wrap" data-search="{{ item.title }} {{ item.brand }} {{ item.get_category_display }} {{ item.description }}">
+  <article class="product-card h-100">
+    <a href="{{ item.get_absolute_url }}" class="product-image-wrap">
+      {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}">{% endif %}
+      {% if item.is_on_sale %}<span class="sale-badge">SALE</span>{% elif item.label == "S" %}<span class="sale-badge dark">TRENDING</span>{% else %}<span class="sale-badge">NEW</span>{% endif %}
+    </a>
+    <div class="product-body">
+      <div class="d-flex justify-content-between gap-2 mb-2">
+        <span class="product-category">{{ item.get_category_display }}</span>
+        <span class="stock-note">{% if item.stock > 0 %}{{ item.stock }} left{% else %}Sold out{% endif %}</span>
+      </div>
+      <a href="{{ item.get_absolute_url }}" class="text-decoration-none text-dark"><h5>{{ item.title }}</h5></a>
+      <p class="brand-line">{{ item.brand }}</p>
+      <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
+        <div>
+          {% if item.is_on_sale %}<span class="price-sale">NPR {{ item.discount_price }}</span><del class="price-old">NPR {{ item.price }}</del>
+          {% else %}<span class="price-sale text-dark">NPR {{ item.price }}</span>{% endif %}
+        </div>
+        {% if user.is_authenticated and item.stock > 0 %}
+        <a href="{{ item.get_add_to_cart_url }}" class="add-btn" title="Add to cart"><i class="bi bi-plus-lg"></i></a>
+        {% else %}
+        <a href="{{ item.get_absolute_url }}" class="add-btn" title="View product"><i class="bi bi-arrow-right"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+</div>

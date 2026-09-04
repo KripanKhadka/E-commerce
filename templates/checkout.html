@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Checkout | Hamro Sports{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-heading"><span class="eyebrow dark">CHECKOUT</span><h1>Where should we deliver?</h1><p>Enter the address for this order.</p></div>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card-clean p-4">
+        <form method="post">{% csrf_token %}
+          <div class="mb-3"><label class="form-label fw-semibold">Street / delivery address</label><textarea name="street_address" class="form-control form-control-lg" rows="3" required placeholder="House, street, area, city"></textarea></div>
+          <div class="row g-3">
+            <div class="col-md-8"><label class="form-label fw-semibold">Apartment / landmark <span class="text-muted fw-normal">(optional)</span></label><input name="apartment_address" class="form-control" placeholder="Near..."></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Postal code</label><input name="zip" class="form-control" placeholder="44600"></div>
+          </div>
+          <button class="btn btn-dark btn-lg rounded-pill px-5 mt-4">Continue to payment <i class="bi bi-arrow-right ms-1"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-5">{% include "order_snippet.html" %}</div>
+  </div>
+</div>
+{% endblock %}

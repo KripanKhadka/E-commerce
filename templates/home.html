@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Hamro Sports | Train. Play. Explore.{% endblock %}
+{% block content %}
+
+<section class="hero-wrap">
+  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      {% for slide in hero_slides %}
+      {% if slide.image %}
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
+      {% endif %}
+      {% empty %}
+      <button class="active"></button>
+      {% endfor %}
+    </div>
+    <div class="carousel-inner">
+      {% for slide in hero_slides %}
+      {% if slide.image %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ slide.image.url }}" class="hero-image" alt="{{ slide.title }}">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+          <span class="eyebrow">HAMRO SPORTS / PERFORMANCE STORE</span>
+          <h1>{{ slide.title }}</h1>
+          <p>{{ slide.subtitle }}</p>
+          <a href="{{ slide.button_url }}" class="btn btn-accent btn-lg rounded-pill px-4">{{ slide.button_text }} <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+      {% endif %}
+      {% empty %}
+      <div class="carousel-item active">
+        <div class="hero-fallback">
+          <div class="container hero-content">
+            <span class="eyebrow">SPORTS GEAR FOR EVERY DAY</span>
+            <h1>Train harder.<br>Play better.</h1>
+            <p>Football, fitness, outdoor and everyday sports essentials.</p>
+            <a href="#products" class="btn btn-accent btn-lg rounded-pill px-4">Shop the collection <i class="bi bi-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+    <button class="carousel-control-next" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container">
+    <div class="row g-3 text-center">
+      <div class="col-md-3"><i class="bi bi-truck"></i><strong>Fast delivery</strong><span>Across Nepal</span></div>
+      <div class="col-md-3"><i class="bi bi-shield-check"></i><strong>Secure checkout</strong><span>Verified payments</span></div>
+      <div class="col-md-3"><i class="bi bi-box-seam"></i><strong>Real stock</strong><span>Inventory tracked</span></div>
+      <div class="col-md-3"><i class="bi bi-headset"></i><strong>Human support</strong><span>We're here to help</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="categories" class="container py-5">
+  <div class="section-heading">
+    <span class="eyebrow dark">SHOP BY SPORT</span>
+    <h2>Find your game.</h2>
+    <p>Browse the store by the way you train and play.</p>
+  </div>
+  <div class="row g-3">
+    {% for code,title,description in categories %}
+    <a class="col-md-4 text-decoration-none" href="#category-{{ code }}">
+      <div class="category-card">
+        <span class="category-number">0{{ forloop.counter }}</span>
+        <div><h5>{{ title }}</h5><p>{{ description }}</p></div>
+        <i class="bi bi-arrow-up-right"></i>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if featured_items %}
+<section class="container pb-5">
+  <div class="section-heading d-flex justify-content-between align-items-end">
+    <div><span class="eyebrow dark">EDITOR'S PICKS</span><h2>Featured gear.</h2></div>
+    <a href="#products" class="link-dark fw-semibold">View all <i class="bi bi-arrow-right"></i></a>
+  </div>
+  <div class="row g-4">
+    {% for item in featured_items %}
+      {% include "product_card.html" with item=item %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="container pb-5" id="products">
+  <div class="section-heading">
+    <span class="eyebrow dark">THE COLLECTION</span>
+    <h2>Gear for the next session.</h2>
+    <p>Search by product, brand or sport. Everything is managed from the Django admin.</p>
+  </div>
+  <div class="search-box mb-4">
+    <i class="bi bi-search"></i>
+    <input id="productSearch" type="search" placeholder="Search products, brands or categories...">
+  </div>
+
+  {% for section in grouped_items %}
+  <section id="category-{{ section.code }}" class="mb-5 product-section" data-section="{{ section.code }}">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div><h3 class="fw-bold mb-1">{{ section.title }}</h3><p class="text-muted mb-0">{{ section.description }}</p></div>
+      <span class="small text-muted">{{ section.items|length }} products</span>
+    </div>
+    <div class="row g-4 product-grid">
+      {% for item in section.items %}
+        {% include "product_card.html" with item=item %}
+      {% empty %}
+        <div class="col-12"><div class="empty-state">No products in this category yet.</div></div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+  <div id="noResultsMessage" class="empty-state d-none">No products matched your search.</div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("productSearch");
+  const cards = [...document.querySelectorAll(".product-card-wrap")];
+  const empty = document.getElementById("noResultsMessage");
+  if (!input) return;
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+    let visible = 0;
+    cards.forEach(card => {
+      const text = (card.dataset.search || "").toLowerCase();
+      const show = !q || text.includes(q);
+      card.classList.toggle("d-none", !show);
+      if (show) visible++;
+    });
+    empty.classList.toggle("d-none", visible !== 0);
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Create Account | Hamro Sports{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="auth-card auth-card-wide mx-auto">
+    <span class="eyebrow dark">HAMRO SPORTS</span>
+    <h1 class="mt-2">Create your account.</h1>
+    <p class="text-muted mb-4">Create an account to save your details, track orders and checkout securely.</p>
+    <form method="post" novalidate>{% csrf_token %}
+      {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="row g-3">
+        {% for field in form %}
+          <div class="{% if field.name == 'username' or field.name == 'email' or field.name == 'phone' or field.name == 'password1' or field.name == 'password2' %}col-12{% else %}col-md-6{% endif %}">
+            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+            {% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      <button class="btn btn-accent w-100 rounded-pill py-3 mt-4 fw-bold">Create account <i class="bi bi-arrow-right ms-1"></i></button>
+    </form>
+    <p class="small text-muted mt-4 mb-0 text-center">Already have an account? <a href="{% url 'login' %}" class="fw-semibold">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}
