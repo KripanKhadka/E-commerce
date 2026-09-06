@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Hamro Sports | Train. Play. Explore.{% endblock %}
 {% block content %}
 
@@ -117,7 +118,40 @@
   {% endfor %}
   <div id="noResultsMessage" class="empty-state d-none">No products matched your search.</div>
 </section>
+
+
+<section class="container py-5" id="team">
+  <div class="section-heading">
+    <span class="eyebrow dark">THE PEOPLE BEHIND IT</span>
+    <h2>Made by our team.</h2>
+    <p>A few of the people who built Hamro Sports.</p>
+  </div>
+  <div class="row g-4 justify-content-center">
+    <div class="col-6 col-md-3 text-center">
+      <div class="team-photo mx-auto mb-3">
+        <img src="{% static 'img/team/img1.jpeg' %}" alt="Team member name" onerror="this.closest('.team-photo').classList.add('team-photo-fallback'); this.remove();">
+      </div>
+      <h6 class="fw-bold mb-0">Kripan Khadka</h6>
+      <span class="text-muted small">Backend Developer</span>
+    </div>
+    <div class="col-6 col-md-3 text-center">
+      <div class="team-photo mx-auto mb-3">
+        <img src="{% static 'img/team/img2.png' %}" alt="Team member name" onerror="this.closest('.team-photo').classList.add('team-photo-fallback'); this.remove();">
+      </div>
+      <h6 class="fw-bold mb-0">Rohit Pandey</h6>
+      <span class="text-muted small">Frontend Developer</span>
+    </div>
+    <div class="col-6 col-md-3 text-center">
+      <div class="team-photo mx-auto mb-3">
+        <img src="{% static 'img/team/img3.jpeg' %}" alt="Team member name" onerror="this.closest('.team-photo').classList.add('team-photo-fallback'); this.remove();">
+      </div>
+      <h6 class="fw-bold mb-0">Ronak Karki</h6>
+      <span class="text-muted small">UI/UX Designer</span>
+    </div>
+  </div>
+</section>
 {% endblock %}
+
 
 {% block extra_scripts %}
 <script>
