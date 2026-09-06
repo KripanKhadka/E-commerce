@@ -17,7 +17,15 @@
         {% endif %}
       </ul>
       <div class="d-flex align-items-center gap-2">
-        <a class="nav-icon" href="{% url 'core:order-summary' %}" title="Cart"><i class="bi bi-bag"></i></a>
+        <a class="nav-icon position-relative" href="{% url 'core:order-summary' %}" title="Cart">
+        <i class="bi bi-bag"></i>
+        {% if cart_item_count %}
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+        {{ cart_item_count }}
+        <span class="visually-hidden">items in cart</span>
+        </span>
+         {% endif %}
+        </a>
         {% if user.is_authenticated %}
           <a class="btn btn-sm btn-light rounded-pill px-3" href="{% url 'core:account' %}"><i class="bi bi-person me-1"></i>Account</a>
           <form method="post" action="{% url 'logout' %}" class="d-inline">{% csrf_token %}
