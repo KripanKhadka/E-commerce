@@ -15,7 +15,7 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ("title", "description", "brand")
     prepopulated_fields = {"slug": ("title",)}
     list_editable = ("stock", "featured", "active", "label")
-    readonly_fields = ("created_at", "updated_at", "slug")
+    readonly_fields = ("created_at", "updated_at")
     fieldsets = (
         ('Product Information', {
             'fields': ('title', 'slug', 'brand', 'description', 'category')
